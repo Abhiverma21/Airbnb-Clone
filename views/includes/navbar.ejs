@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Navbar</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    .btn-search{
+      background-color: #fe424d;
+      color: #fff;
+      border-radius: 25px;
+      width: 200px;
+      
+  }
+  .btn-search:hover {
+      background-color: #fe424d;
+      color: #fff;
+  }
+  .search-input{
+    border-radius: 25px;
+    padding: 0.5rem 3rem ;
+    font-size: 1rem;
+  }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-md bg-body-light sticky-top">
+    <div class="container-fluid">
+      <a class="navbar-brand nav-icon" href="/listings"><i class="fa-solid fa-compass"></i></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+
+          <li class="nav-item">
+            <a class="nav-link" href="/listings">Explore</a>
+          </li>
+
+
+
+        </ul>
+      </div>
+      <div class="navbar-nav ms-auto">
+        <form class="d-flex" role="search" action="/listings">
+          <input class="form-control me-2 search-input" type="search" placeholder="Search Destination" aria-label="Search" id="search-in">
+          <button class="btn btn-search" type="submit" id="search-btn"><i class="fa-solid fa-magnifying-glass"></i>Search</button>
+        </form>
+      </div>
+      <div class="collapse navbar-collapse ms-auto" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <a class="nav-link" href="/listings/new">Airbnb your home</a>
+          <% if (!currUser) { %>
+            <li class="nav-item">
+              <a class="nav-link " aria-current="page" href="/signUp"><b>Sign Up</b></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/login"><b>Login</b></a>
+            </li>
+            <% } %>
+              <% if(currUser) { %>
+                <li class="nav-item">
+                  <a class="nav-link" href="/logout"><b>Logout</b></a>
+                  <% } %>
+                </li>
+
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+    <script>
+ 
+ 
+  const countries = ["USA", "Canada", "Mexico", "France", "Germany", "Italy", "Spain", "Australia", "Japan", "India"];
+
+  let inpbtn = document.getElementById("search-in");
+  let searchbtn = document.getElementById("search-btn");
+
+  searchbtn.addEventListener("click", (event) => {
+    event.preventDefault();
+    const inputValue = inpbtn.value.trim();
+
+    if (countries.includes(inputValue)) {
+      console.log(`Match found: ${inputValue}`)
+      
+    } else {
+      console.log(`No match found for: ${inputValue}`)
+  
+    }
+  });
+
+    </script>
+</body>
+
+</html>

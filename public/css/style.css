@@ -1,0 +1,162 @@
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container {
+    flex: 1;
+}
+
+.navbar {
+    height: 5rem;
+    background-color: white;
+}
+
+.fa-compass {
+    color: #fe424d !important;
+    font-size: 2rem;
+}
+
+.nav-link {
+    color: #222222 !important;
+}
+
+.f-info-links {
+    text-decoration: none !important;
+    color: #222222 !important;
+    width: 100%;
+}
+
+.f-info-social {
+    width: 100%;
+    font-size: 1.5rem;
+    vertical-align: middle;
+}
+
+.f-info {
+    text-align: center;
+    display: flex;
+    height: 8rem;
+    background-color: #ebebeb;
+    flex-wrap: wrap;
+    justify-content: center;
+
+}
+
+
+/* card */
+.listing-card {
+    border: none !important;
+    margin-bottom: 2rem !important;
+}
+
+.card-img-top {
+    border-radius: 1rem !important;
+    width: 100% !important;
+    object-fit: cover !important;
+}
+
+.card-body {
+    padding: 0 !important;
+
+}
+
+.listing-link {
+    text-decoration: none !important;
+}
+
+.card-img-overlay {
+    opacity: 0;
+}
+
+.card-img-overlay:hover {
+    background-color: white;
+    opacity: 0.3;
+}
+
+.add-btn {
+    background-color: #fe424d !important;
+    border: none !important;
+    margin-bottom: 2rem;
+}
+
+
+.show-img {
+    height: 30vh;
+
+}
+
+.btns {
+    display: flex;
+    margin-bottom: 2rem;
+}
+
+.show-card {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+/* Rview Card */
+.review-card {
+    border: 2px solid black;
+    width: fit-content;
+    height: fit-content;
+}
+
+#filters {
+    display: flex;
+    flex-wrap: wrap;
+
+}
+
+.filter {
+    opacity: 0.6;
+    margin-right: 2.3rem;
+    text-align: center;
+}
+
+.filter:hover {
+    opacity: 1;
+    cursor: pointer;
+}
+
+.filter p {
+    font-size: large;
+}
+
+@media (max-width: 992px) {
+    .filter {
+        display: none;
+    }
+
+    .filter:nth-child(-n+5) {
+        display: flex;
+    }
+}
+
+.tax-info {
+    display: none;
+}
+
+.tax-toggle {
+    border: 2px solid black;
+    border-radius: 1rem;
+    height: 3.5rem;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+}
+.btn-search{
+    background-color: #fe424d;
+    color: #fff;
+}
+.btn-search:hover {
+    background-color: #fe424d;
+    color: #fff;
+}
+.filter a {
+    text-decoration: none;
+    color: grey;
+    opacity: 0.9;
+}
