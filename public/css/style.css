@@ -160,3 +160,17 @@ body {
     color: grey;
     opacity: 0.9;
 }
+@media (max-width: 992px) {
+    #search-btn{
+        display: none;
+    }
+    #search-in{
+        display: none;
+    }
+   
+}
+@media(max-width: 989px){
+    .tax-toggle{
+        display: none;
+    }
+}
