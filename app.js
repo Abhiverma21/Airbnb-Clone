@@ -16,7 +16,8 @@ const Mongostore = require("connect-mongo");
 const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
-const dbUrl = process.env.ATLAS_URL;
+// const dbUrl = process.env.ATLAS_URL;
+const dbUrl = 'mongodb://127.0.0.1:27017/wanderlust'
 const methodOverride = require("method-override");
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
