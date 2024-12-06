@@ -35,20 +35,19 @@ async function main() {
     mongoose.connect(dbUrl);
 }
 //MongoStore
-const mongoStore = Mongostore.create({
+const store = Mongostore.create({
     mongoUrl: dbUrl,
     crypto: {
         secret: process.env.SECRET,
-
     },
     touchAfter: 24 * 60 * 60 // 1 day
 });
-mongoStore.on("error", () => {
+store.on("error", () => {
     console.log("Error in MongoStore", err);
 });
 //sessions
 const sessionOption = {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
-    mongoStore,
+    store,
     secret: process.env.SECRET,
     resave: false,
     saveUninitialized: true,
