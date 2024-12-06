@@ -16,8 +16,8 @@ const Mongostore = require("connect-mongo");
 const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
-// const dbUrl = process.env.ATLAS_URL;
-const dbUrl = 'mongodb://127.0.0.1:27017/wanderlust'
+const dbUrl = process.env.ATLAS_URL;
+
 const methodOverride = require("method-override");
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
@@ -32,7 +32,7 @@ main()
         console.log(err)
     });
 async function main() {
-    await mongoose.connect(dbUrl);
+    mongoose.connect(dbUrl);
 }
 //MongoStore
 const mongoStore = Mongostore.create({
@@ -47,7 +47,7 @@ mongoStore.on("error", () => {
     console.log("Error in MongoStore", err);
 });
 //sessions
-const sessionOption = {
+const sessionOption = {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
     mongoStore,
     secret: process.env.SECRET,
     resave: false,
