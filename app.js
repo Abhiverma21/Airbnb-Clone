@@ -75,7 +75,11 @@ app.use((req, res, next) => {
     res.locals.currUser = req.user;
     next();
 });
-app.use("/", listings);
+
+app.use("/listings", listings);
+app.get("/" ,(req,res)=>{
+    res.redirect("https://hotelvault.onrender.com/listings");
+});
 app.use("/listings/:id/reviews", Review);
 app.use("/", UserRouter);
 app.listen(port, () => {
