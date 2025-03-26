@@ -75,7 +75,7 @@ app.use((req, res, next) => {
     res.locals.currUser = req.user;
     next();
 });
-app.use("/listings", listings);
+app.use("/", listings);
 app.use("/listings/:id/reviews", Review);
 app.use("/", UserRouter);
 app.listen(port, () => {
