@@ -1,7 +1,27 @@
 <% layout("/layouts/boilerplate") -%>
 
+<style>
+   @media screen and (max-width: 500px) {
+        .view{
+            width: 100%;
+            
+        }
+        .img{
+            width: 100%;
+        }
+        .abhi{
+            display: flex;
+            flex-direction: column;
+            width: fit-content;
+            
+        }
+        .para{
+            width: 100%;
+        }
+   }
+</style>
     <body>
-        <div class="row mt-3">
+        <div class="row mt-3 view">
             <div class="col-8 offset-3">
                 <h1>
                     <%=listing.title %>
@@ -9,12 +29,12 @@
             </div>
 
             <div class=" col-6 offset-3 show-card">
-                <img src="<%=listing.image.url%>" class="card-img-top show-img" alt="listing_image">
+                <img src="<%=listing.image.url%>" class="card-img-top show-img img" alt="listing_image">
                 <div class="card-body">
-                    <p class="card-text">
+                    <p class="card-text ">
                     <p>Owned By: <%= listing.owner.username %>
                     </p>
-                    <p>
+                    <p class="para">
                         <%=listing.description %><br>
                     </p>
 
@@ -78,10 +98,10 @@
 
                                 <h4>All Reviews</h4>
                                 <ul>
-                                    <div class="row ">
+                                    <div class="row abhi " >
                                         <% for (review of listing.reviews) { %>
 
-                                            <div class="card col-5 mb-3 ms-3">
+                                            <div class="card col-5 mb-3 ms-3 abhi ">
                                                 <div class="card-body">
                                                     <p class="card-text">@<b>
                                                             <%=review.author.username%>
