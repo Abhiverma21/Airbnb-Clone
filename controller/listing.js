@@ -10,6 +10,18 @@ module.exports.render = (async (req, res) => {
     res.render("./listings/new.ejs");
 });
 
+module.exports.renderBookPage = async (req, res) => {
+  const { id } = req.params;
+  const listing = await Listing.findById(id);
+  if (!listing) {
+    req.flash("error", "Listing not found!");
+    return res.redirect("/listings");
+  }
+  res.render("listings/book", { listing });
+};
+
+
+
 module.exports.create =(async (req, res, next) => {
     let url = req.file.path;
     let filename = req.file.filename;

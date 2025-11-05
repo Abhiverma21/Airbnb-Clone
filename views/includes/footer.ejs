@@ -1,14 +1,121 @@
 <footer>
-    <div class="f-info">
-        <div class="f-info-social">
-            <i class="fa-brands fa-facebook"></i>
-            <i class="fa-brands fa-square-instagram"></i>
-            <i class="fa-brands fa-linkedin"></i>
-        </div>
-        <div> &copy;Wanderlust Private Limited</div>
-        <div class="f-info-links">
-            <a href="/privacy">Privacy</a>
-            <a href="/terms">Terms</a>
-        </div>
+  <div class="footer-container">
+    <!-- Social Links -->
+    <div class="footer-social">
+      <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+      <a href="#"><i class="fa-brands fa-instagram"></i></a>
+      <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
     </div>
+
+    <!-- Company Info -->
+    <div class="footer-text">
+      <p>© <span id="year"></span> HotelVault Private Limited</p>
+      <p class="tagline">Discover your next unforgettable journey ✈️</p>
+    </div>
+
+    <!-- Footer Links -->
+    <div class="footer-links">
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+    </div>
+  </div>
 </footer>
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+
+<style>
+  footer {
+    background: linear-gradient(135deg, #fff 0%, #f8f8f8 100%);
+    border-top: 1px solid #eee;
+    padding: 2rem 1rem;
+    margin-top: 3rem;
+    text-align: center;
+    color: #333;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  .footer-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2rem;
+    animation: fadeIn 1s ease;
+  }
+
+  /* Social Icons */
+  .footer-social a {
+    color: #ff385c;
+    font-size: 1.4rem;
+    margin: 0 0.6rem;
+    display: inline-block;
+    transition: transform 0.3s ease, color 0.3s ease;
+  }
+
+  .footer-social a:hover {
+    transform: translateY(-3px) scale(1.15);
+    color: #e03150;
+  }
+
+  /* Footer Text */
+  .footer-text {
+    font-size: 0.95rem;
+    line-height: 1.4;
+  }
+
+  .footer-text .tagline {
+    font-size: 0.9rem;
+    color: #777;
+  }
+
+  /* Footer Links */
+  .footer-links a {
+    color: #555;
+    text-decoration: none;
+    margin: 0 0.5rem;
+    font-weight: 500;
+    transition: color 0.3s ease, border-bottom 0.3s ease;
+  }
+
+  .footer-links a:hover {
+    color: #ff385c;
+    border-bottom: 1px solid #ff385c;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .footer-container {
+      gap: 1.5rem;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.7rem;
+    }
+
+    .footer-text p {
+      margin: 0.3rem 0;
+    }
+  }
+
+  /* Soft fade-in animation */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+
+<script>
+  // Auto-update year
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>

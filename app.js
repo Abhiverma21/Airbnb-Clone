@@ -42,8 +42,8 @@ const store = Mongostore.create({
     },
     touchAfter: 24 * 60 * 60 // 1 day
 });
-store.on("error", () => {
-    console.log("Error in MongoStore", err);
+store.on("error", (err) => {
+    console.error("Error in MongoStore", err);
 });
 //sessions
 const sessionOption = {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
@@ -77,7 +77,8 @@ app.use((req, res, next) => {
 });
 
 app.use("/listings", listings);
-app.get("/" ,(req,res)=>{
+app.get("/", (req, res) => {
+    // Redirect locally to the listings route instead of the external live site
     res.redirect("https://hotelvault.onrender.com/listings");
 });
 app.use("/listings/:id/reviews", Review);
@@ -90,6 +91,10 @@ app.all("*", (req, res, next) => {
 });
 app.use((err, req, res, next) => {
     let { statusCode = 500, message = "Something gone wrong" } = err;
-    res.status(statusCode).render("error.ejs", { message })
+    // Log full error server-side for debugging
+    console.error(err);
+    // In non-production show error details in the template (stack) for easier debugging
+    const showStack = process.env.NODE_ENV !== "production";
+    res.status(statusCode).render("error.ejs", { message, error: showStack ? err : {} });
 
-})
+});
