@@ -76,7 +76,7 @@
     margin-top: 15px;
   }
   .price-highlight {
-    font-size: 1.5rem;
+    font-size: 1.0rem;
     font-weight: 700;
     color: #ff385c;
     margin-top: 15px;
@@ -173,9 +173,15 @@
   .reviews-container {
     display: flex;
     gap: 15px;
-    overflow-x: auto;
     padding-bottom: 10px;
     scroll-behavior: smooth;
+  }
+  .reviews-container.logged-in {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+  .reviews-container:not(.logged-in) {
+    flex-wrap: wrap;
   }
   .review-card {
     flex: 0 0 300px;
@@ -185,20 +191,46 @@
     box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 12px;
+    transition: transform 0.2s ease;
+  }
+  .reviews-container:not(.logged-in) .review-card {
+    flex: 0 0 calc(50% - 15px);
+  }
+  .review-card:hover {
+    transform: translateY(-3px);
+  }
+  .review-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 10px;
+  }
+  .avatar {
+    width: 40px;
+    height: 40px;
+    background-color: #ff385c;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
   }
   .review-card .username {
     font-weight: 600;
     color: #333;
-    margin-bottom: 5px;
+    margin-bottom: 0;
   }
   .review-card .stars {
     display: flex;
     gap: 2px;
-    margin-bottom: 8px;
   }
   .review-card .stars i {
     color: #ffd700;
+    font-size: 0.9rem;
   }
   .review-card .stars i.gray {
     color: #ccc;
@@ -206,10 +238,14 @@
   .review-card .comment {
     color: #555;
     font-size: 0.95rem;
-    line-height: 1.4;
+    line-height: 1.6;
+    border-left: 3px solid #ff385c;
+    padding-left: 12px;
+    margin: 0;
   }
   .review-card form button {
-    margin-top: 10px;
+    align-self: flex-end;
+    margin-top: auto;
   }
 
   /* ---------- RESPONSIVE ---------- */
@@ -279,7 +315,7 @@
           <div class="card-body">
             <p class="owner">Hosted by <b><%= listing.owner.username %></b></p>
             <p class="description">Description: <%= listing.description %></p>
-            <p class="price-highlight">
+            <p class="price-highlight ">
               ₹<%= listing.price.toLocaleString("en-IN") %> / night
             </p>
           </div>
@@ -337,20 +373,30 @@
         <% } %>
 
         <h4>All Reviews</h4>
-        <div class="reviews-container">
+        <div class="reviews-container <%= currUser ? 'logged-in' : '' %>">
           <% if(listing.reviews.length === 0) { %>
           <p class="text-muted">
             No reviews yet. Be the first to share your experience!
           </p>
-          <% } else { %> <% for(let review of listing.reviews){ %>
+          <% } else { %> 
+          <% for(let review of listing.reviews){ %>
           <div class="review-card">
-            <p class="username">@<%= review.author.username %></p>
-            <div class="stars">
-              <% for(let i=1;i<=5;i++){ %> <% if(i <= review.rating){ %>
-              <i class="fa-solid fa-star"></i>
-              <% } else { %>
-              <i class="fa-solid fa-star gray"></i>
-              <% } %> <% } %>
+            <div class="review-header">
+              <div class="avatar">
+                <%= review.author.username.charAt(0).toUpperCase() %>
+              </div>
+              <div>
+                <p class="username">@<%= review.author.username %></p>
+                <div class="stars">
+                  <% for(let i=1;i<=5;i++){ %> 
+                    <% if(i <= review.rating){ %>
+                    <i class="fa-solid fa-star"></i>
+                    <% } else { %>
+                    <i class="fa-solid fa-star gray"></i>
+                    <% } %> 
+                  <% } %>
+                </div>
+              </div>
             </div>
             <p class="comment"><%= review.comment %></p>
             <% if(currUser && review.author._id.equals(currUser._id)) { %>
@@ -362,7 +408,8 @@
             </form>
             <% } %>
           </div>
-          <% } %> <% } %>
+          <% } %> 
+          <% } %>
         </div>
       </div>
     </div>

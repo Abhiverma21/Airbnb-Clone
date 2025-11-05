@@ -13,7 +13,7 @@ module.exports.signUp = async(req,res)=>{
         if(err){
             next(err);
         }
-        req.flash("success","Welcome to Wanderlust");
+        req.flash("success","Welcome to HotelVault");
         res.redirect("/listings");
     })
     
@@ -28,7 +28,7 @@ module.exports.loginForm = async(req,res)=>{
 };
 
 module.exports.login = async(req,res)=>{
-    req.flash("success","Welcome back to Wanderlust!! You are logged in !");
+    req.flash("success","Welcome back to HotelVault!! You are logged in !");
     let redirectUrl = res.locals.redirectUrl || "/listings";
     res.redirect(redirectUrl);
 };

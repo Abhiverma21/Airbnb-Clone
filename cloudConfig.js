@@ -10,8 +10,9 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
     cloudinary: cloudinary,
     params: {
-      folder: 'wanderlust_development',
-      allowdedformat: ["png","jpeg","jpg"] ,
+      folder: 'HotelVault_development',
+      allowed_formats: ["png", "jpeg", "jpg"],
+      transformation: [{ width: 1000, height: 1000, crop: "limit" }]
     },
   });
 

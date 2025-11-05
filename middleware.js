@@ -54,11 +54,13 @@ module.exports.validateReview=(req,res,next)=>{
     }
 }
 module.exports.isLoggedIn = (req, res, next) => {
-  if (!req.user) {
-    return res.status(401).json({ error: "You must be logged in!" });
-  }
-  next();
+    if (!req.isAuthenticated()) {
+        req.flash("error", "You must be logged in!");
+        return res.redirect("/login"); // redirect to your login page
+    }
+    next();
 };
+
 
 
 

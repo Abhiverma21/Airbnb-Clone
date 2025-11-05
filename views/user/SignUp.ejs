@@ -1,31 +1,246 @@
 <% layout("/layouts/boilerplate") -%>
 
-    <body>
-        <div class="row">
-            <h1 class="col-8 offset-2">SignUp on Wanderlust</h1>
-            <div class="cols col-8 offset-2">
-                <form method="post" action="/signUp" class="needs-validation" novalidate>
-                    <div class="mb-3">
-                        <label for="username" class="form-label">Username</label>
-                        <input type="text" name="username" id="username" class="form-control" required>
-                        <div class="invalid-feedback">Username should be valid</div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="text" name="email" id="email" class="form-control" required>
-                        <div class="invalid-feedback">Email should be valid</div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" name="password" id="password" class="form-control" required>
-                        <div class="invalid-feedback">Password should be valid</div>
-                    </div>
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <% if (success && success.length) { %>
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <%= success[0] %>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+        ></button>
+      </div>
+      <% } %> <% if (error && error.length) { %>
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <%= error[0] %>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+        ></button>
+      </div>
+      <% } %>
 
+      <div class="card shadow-sm">
+        <div class="card-body p-4">
+          <h3 class="card-title mb-3 text-center">Create your account</h3>
+          <p class="text-center text-muted mb-4">
+            Join HotelVault to book amazing stays
+          </p>
 
-             
-                <button class="btn btn-success ">Submit</button>   </form>
-
+          <form
+            action="/signUp"
+            method="POST"
+            class="needs-validation"
+            novalidate
+          >
+            <div class="mb-3">
+              <label for="username" class="form-label">Username</label>
+              <input
+                type="text"
+                class="form-control"
+                id="username"
+                name="username"
+                required
+              />
+              <div class="invalid-feedback">Please provide a username.</div>
             </div>
-        </div>
 
-    </body>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email address</label>
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                name="email"
+                required
+              />
+              <div class="invalid-feedback">Please provide a valid email.</div>
+            </div>
+
+            <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <div class="input-group">
+                <span class="input-group-text"
+                  ><i class="fas fa-lock"></i
+                ></span>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="password"
+                  name="password"
+                  required
+                />
+                <button
+                  class="btn btn-outline-secondary"
+                  type="button"
+                  id="togglePassword"
+                >
+                  <i class="fas fa-eye"></i>
+                </button>
+              </div>
+              <!-- Password requirements alert -->
+              <div class="invalid-feedback" id="password-requirements">
+                Password must contain at least 8 characters, one uppercase letter, one lowercase letter, and one number.
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="password2" class="form-label">Confirm Password</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="password2"
+                  name="password2"
+                  required
+                />
+                <button
+                  class="btn btn-outline-secondary"
+                  type="button"
+                  id="togglePassword2"
+                >
+                  <i class="fas fa-eye"></i>
+                </button>
+              </div>
+              <div class="invalid-feedback" id="confirm-feedback">
+                Passwords must match.
+              </div>
+            </div>
+
+            <div class="d-grid">
+              <button
+                class="btn text-white"
+                style="background-color: #ff385c"
+                type="submit"
+              >
+                Create account
+              </button>
+            </div>
+          </form>
+
+          <p class="text-center mt-3 mb-0">
+            Already have an account? <a href="/login">Log in</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var forms = document.querySelectorAll(".needs-validation");
+  Array.prototype.slice.call(forms).forEach(function (form) {
+    form.addEventListener("submit", function (event) {
+      event.preventDefault(); // Prevent default submission first
+      
+      var pw = document.getElementById("password");
+      var pw2 = document.getElementById("password2");
+      var valid = true;
+
+      // Reset validation state
+      form.classList.add("was-validated");
+      
+      // Check required fields
+      if (!form.checkValidity()) {
+        valid = false;
+      }
+
+      // Password validation
+      if (!validatePassword(pw.value)) {
+        valid = false;
+      }
+
+      // Confirm password check
+      if (!validatePasswordMatch()) {
+        valid = false;
+      }
+
+      // If everything is valid, submit the form
+      if (valid) {
+        form.submit();
+      }
+    }, false);
+  });
+})();
+
+// Password validation function
+function validatePassword(password) {
+  const requirements = {
+    length: password.length >= 8,
+    lowercase: /[a-z]/.test(password),
+    uppercase: /[A-Z]/.test(password),
+    number: /\d/.test(password),
+  };
+
+  const isValid = Object.values(requirements).every(Boolean);
+  const passwordInput = document.getElementById('password');
+  const requirementFeedback = document.getElementById('password-requirements');
+  
+  if (!isValid) {
+    passwordInput.classList.add('is-invalid');
+    requirementFeedback.style.display = "block";
+  } else {
+    passwordInput.classList.remove('is-invalid');
+    requirementFeedback.style.display = "none";
+  }
+
+  // Check confirm password match if it has a value
+  const password2 = document.getElementById('password2');
+  if (password2.value) {
+    validatePasswordMatch();
+  }
+
+  return isValid;
+}
+
+// Confirm password validation
+function validatePasswordMatch() {
+  const password = document.getElementById('password');
+  const password2 = document.getElementById('password2');
+  const feedback = document.getElementById('confirm-feedback');
+  
+  if (password.value !== password2.value) {
+    password2.classList.add('is-invalid');
+    feedback.style.display = "block";
+    return false;
+  } else {
+    password2.classList.remove('is-invalid');
+    feedback.style.display = "none";
+    return true;
+  }
+}
+
+// Add real-time validation listeners
+document.getElementById('password').addEventListener('input', function(e) {
+  validatePassword(e.target.value);
+});
+
+document.getElementById('password2').addEventListener('input', validatePasswordMatch);
+
+// Password visibility toggle functions
+function togglePasswordVisibility(inputId, buttonId) {
+  const toggleBtn = document.getElementById(buttonId);
+  const pwField = document.getElementById(inputId);
+  
+  toggleBtn.addEventListener('click', function () {
+    const type = pwField.getAttribute('type') === 'password' ? 'text' : 'password';
+    pwField.setAttribute('type', type);
+    this.querySelector('i').classList.toggle('fa-eye');
+    this.querySelector('i').classList.toggle('fa-eye-slash');
+  });
+}
+
+// Initialize password toggles
+togglePasswordVisibility('password', 'togglePassword');
+togglePasswordVisibility('password2', 'togglePassword2');
+</script>
+
+

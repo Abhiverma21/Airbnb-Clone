@@ -14,7 +14,8 @@ router.post("/signUp", WrapAsync(userController.signUp));
 
 //login
 
-router.get("/login", WrapAsync(userController.loginForm));
+// Show login form and copy any saved redirect URL into res.locals
+router.get("/login", saveRedirectUrl, WrapAsync(userController.loginForm));
 //login
 router.post("/login",saveRedirectUrl,
     passport.authenticate("local" , {failureRedirect:"/login",failureFlash:true}), WrapAsync(userController.login));
