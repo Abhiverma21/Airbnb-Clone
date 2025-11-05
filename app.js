@@ -79,7 +79,7 @@ app.use((req, res, next) => {
 app.use("/listings", listings);
 app.get("/", (req, res) => {
     // Redirect locally to the listings route instead of the external live site
-    res.redirect("https://hotelvault.onrender.com/listings");
+    res.redirect("https://hotelvaulte.onrender.com");
 });
 app.use("/listings/:id/reviews", Review);
 app.use("/", UserRouter);
