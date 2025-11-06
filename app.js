@@ -11,6 +11,7 @@ const listings = require("./route/listing.js");
 const Review = require("./route/review.js");
 const UserRouter = require("./route/user.js");
 const favoriteRoutes = require("./route/favorite.js");
+const apiBookings = require("./route/apiBookings.js");
 const User = require("./models/user.js");
 const session = require("express-session");
 const Mongostore = require("connect-mongo");
@@ -21,6 +22,7 @@ const dbUrl = process.env.ATLAS_URL;
 
 const methodOverride = require("method-override");
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.set("view engine", "ejs");
 const path = require("path");
 app.use(express.static(path.join(__dirname, "public")));
@@ -78,6 +80,8 @@ app.use((req, res, next) => {
 });
 
 app.use("/listings", listings);
+// API routes (JSON)
+app.use('/api', apiBookings);
 app.get("/", (req, res) => {
     // Redirect locally to the listings route instead of the external live site
     res.redirect("/listings");

@@ -1,5 +1,6 @@
 const User = require("../models/user.js");
 const Listing = require("../models/listing.js");
+const Booking = require("../models/booking.js");
 
 // ===================== SIGNUP FORM =====================
 module.exports.signUpForm = async (req, res) => {
@@ -62,11 +63,46 @@ module.exports.logout = async (req, res, next) => {
 // ===================== PROFILE PAGE =====================
 module.exports.profile = async (req, res, next) => {
   try {
-    const userId = req.user._id;
-    const user = await User.findById(userId).populate('favorites');
-    const listings = await Listing.find({ owner: userId }).lean();
-    res.render('user/profile.ejs', { user, listings });
+  const userId = req.user._id;
+  const user = await User.findById(userId).populate('favorites');
+  const listings = await Listing.find({ owner: userId }).lean();
+  const bookings = await Booking.find({ user: userId }).populate('listing').lean();
+  res.render('user/profile.ejs', { user, listings, bookings });
   } catch (err) {
+    next(err);
+  }
+};
+
+// Update user profile (username, email)
+module.exports.updateProfile = async (req, res, next) => {
+  try {
+    const userId = req.user._id;
+    const { user } = req.body;
+    if (!user) {
+      req.flash('error', 'No data provided');
+      return res.redirect('/profile');
+    }
+
+    const updateData = {};
+    if (user.username) updateData.username = user.username.trim().toLowerCase();
+    if (user.email) updateData.email = user.email.trim();
+
+    // Basic validation
+    if (!updateData.username || !updateData.email) {
+      req.flash('error', 'Username and email are required');
+      return res.redirect('/profile');
+    }
+
+    // Update and return
+    await User.findByIdAndUpdate(userId, updateData, { new: true, runValidators: true });
+    req.flash('success', 'Profile updated successfully');
+    res.redirect('/profile');
+  } catch (err) {
+    // Handle duplicate key error for unique fields
+    if (err && err.code === 11000) {
+      req.flash('error', 'Username or email already in use');
+      return res.redirect('/profile');
+    }
     next(err);
   }
 };

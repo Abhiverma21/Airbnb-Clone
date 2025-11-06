@@ -346,7 +346,10 @@
           checkout:end,
           guests:guestCount,
           paymentMethod,
-          total
+          total,
+          name: document.getElementById('name').value,
+          email: document.getElementById('email').value,
+          phone: document.getElementById('phone').value
         })
       });
       const data = await res.json();

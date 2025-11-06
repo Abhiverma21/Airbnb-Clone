@@ -26,5 +26,7 @@ router.get("/logout",WrapAsync(userController.logout));
 
 // profile
 router.get('/profile', require('../middleware').isLoggedIn, WrapAsync(userController.profile));
+// update profile
+router.put('/profile', require('../middleware').isLoggedIn, WrapAsync(userController.updateProfile));
 
 module.exports= router;
