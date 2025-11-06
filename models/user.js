@@ -3,12 +3,26 @@ const Schema=mongoose.Schema;
 const passportLocalMongoose = require("passport-local-mongoose");
 
 const userSchema= new Schema({
-   username: String,
+   username: {
+         type:String,
+         required:true,
+         unique:true,
+         lowercase:true,
+         trim:true
+   },
      email:{
         type:String,
-        required:true
-     }
-})
+        required:true,
+         unique:true,
+         trim:true
+     },
+     favorites: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Listing'
+     }]
+   },
+   {timestamps:true}
+)
 
 userSchema.plugin(passportLocalMongoose);
 

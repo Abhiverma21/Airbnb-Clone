@@ -12,9 +12,7 @@
           <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" />
           <label class="form-check-label fw-semibold small" for="flexSwitchCheckDefault">Show Tax Info</label>
         </div>
-        <button id="viewFavsBtn" class="btn btn-outline-danger btn-sm px-3">
-          ❤️ View Favourites
-        </button>
+        
       </div>
     </div>
 
@@ -256,8 +254,18 @@
       });
     });
 
-    // FAVOURITES
-    let favourites = JSON.parse(localStorage.getItem("favourites")) || [];
+  // FAVOURITES
+  // server-provided favorites for logged-in users
+  const serverFavs = <%- JSON.stringify(userFavorites || []) %>;
+  const isLoggedIn = <%= !!currUser %>;
+
+    let favourites = [];
+    if (isLoggedIn && serverFavs && serverFavs.length) {
+      favourites = serverFavs.slice();
+    } else {
+      favourites = JSON.parse(localStorage.getItem("favourites")) || [];
+    }
+
     const updateFavIcons = () => {
       document.querySelectorAll(".fav-btn").forEach((btn) => {
         const id = btn.dataset.id;
@@ -273,17 +281,45 @@
     };
 
     document.querySelectorAll(".fav-btn").forEach((btn) => {
-      btn.addEventListener("click", (e) => {
+      btn.addEventListener("click", async (e) => {
         e.preventDefault();
         e.stopPropagation();
         const id = btn.dataset.id;
-        if (favourites.includes(id)) {
-          favourites = favourites.filter((fid) => fid !== id);
+
+        // If user is logged in, persist server-side via existing route
+        if (isLoggedIn) {
+          try {
+            const res = await fetch(`/listings/${id}/favorite`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' }
+            });
+            if (res.ok) {
+              const data = await res.json();
+              if (data.isFavorite) {
+                if (!favourites.includes(id)) favourites.push(id);
+              } else {
+                favourites = favourites.filter((fid) => fid !== id);
+              }
+              // Optionally update localStorage for guest fallback
+              localStorage.setItem('favourites', JSON.stringify(favourites));
+              updateFavIcons();
+            } else {
+              // if not ok, maybe require login
+              console.error('Failed to update favorite on server');
+            }
+          } catch (err) {
+            console.error('Error toggling favorite:', err);
+          }
         } else {
-          favourites.push(id);
+          // Guest: use localStorage only
+          if (favourites.includes(id)) {
+            favourites = favourites.filter((fid) => fid !== id);
+          } else {
+            favourites.push(id);
+          }
+          localStorage.setItem("favourites", JSON.stringify(favourites));
+          updateFavIcons();
         }
-        localStorage.setItem("favourites", JSON.stringify(favourites));
-        updateFavIcons();
       });
     });
 

@@ -1,9 +1,17 @@
 const Listing = require("../models/listing.js");
+const User = require("../models/user.js");
 
 
 module.exports.index = (async (req, res) => {
     const allListings = await Listing.find({});
-    res.render("./listings/index.ejs", { allListings });
+    let userFavorites = [];
+    if (req.user) {
+        const user = await User.findById(req.user._id);
+        if (user && user.favorites) {
+            userFavorites = user.favorites.map(f => f.toString());
+        }
+    }
+    res.render("./listings/index.ejs", { allListings, userFavorites });
 
 });
 module.exports.render = (async (req, res) => {

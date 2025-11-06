@@ -7,7 +7,9 @@
   }
 
   .booking-container {
-    max-width: 900px;
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 1200px;
     margin: 60px auto;
     background: #fff;
     border-radius: 16px;
@@ -21,15 +23,25 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
+  /* Left (Info + Form) */
+  .booking-left {
+    flex: 0 0 60%;
+    padding: 2rem;
+    border-right: 1px solid #ddd;
+    background-color: #fff;
+  }
+
   .booking-header {
     background: linear-gradient(135deg, #ff5a5f, #e61e4d);
     color: white;
-    padding: 2rem;
+    padding: 1.5rem;
     text-align: center;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
   }
 
   .booking-header h1 {
-    font-size: 2rem;
+    font-size: 1.8rem;
     font-weight: 700;
   }
 
@@ -37,13 +49,12 @@
     display: flex;
     flex-wrap: wrap;
     gap: 1.2rem;
-    padding: 1.5rem;
     align-items: center;
   }
 
   .listing-info img {
     width: 100%;
-    max-width: 320px;
+    max-width: 280px;
     border-radius: 10px;
     object-fit: cover;
     transition: transform 0.3s ease-in-out;
@@ -55,8 +66,7 @@
   .listing-details h2 { font-weight: 600; }
 
   .booking-form {
-    padding: 1.5rem;
-    border-top: 1px solid #ddd;
+    margin-top: 1.5rem;
   }
 
   label { font-weight: 500; margin-top: 10px; }
@@ -68,25 +78,21 @@
     margin-top: 15px;
   }
 
-  .btn-book, .btn-pay {
-    background-color: #ff385c;
-    color: white;
-    font-weight: 600;
-    padding: 10px 25px;
-    border: none;
-    border-radius: 8px;
-    transition: all 0.3s;
+  /* Right (Payment) */
+  .booking-right {
+    flex: 0 0 40%;
+    padding: 2rem;
+    background: #fff5f7;
+    align-items: center;
   }
-
-  .btn-book:hover, .btn-pay:hover { background-color: #e61e4d; }
 
   #payment-section {
     background: #fff;
     padding: 1.5rem;
     border-radius: 12px;
-    margin: 1.5rem auto;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
     animation: fadeInUp 0.6s ease;
+    align-items: center;
   }
 
   @keyframes fadeInUp {
@@ -103,7 +109,7 @@
     border-radius: 8px;
   }
 
-  .payment-box.active { border-color: #ff385c; background: #fff5f7; }
+  .payment-box.active { border-color: #ff385c; background: #fff0f3; }
   .payment-box:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
 
   .payment-details input {
@@ -115,7 +121,21 @@
     margin-top: 5px;
   }
 
-  /* Confirmation Modal */
+  .btn-pay {
+    background-color: #ff385c;
+    color: white;
+    font-weight: 600;
+    padding: 10px 25px;
+    border: none;
+    border-radius: 8px;
+    transition: all 0.3s;
+    width: 100%;
+    margin-top: 1rem;
+  }
+
+  .btn-pay:hover { background-color: #e61e4d; }
+
+  /* Modal */
   .modal {
     display: none;
     position: fixed;
@@ -142,6 +162,7 @@
   }
 
   .modal-content h3 { color: #28a745; font-weight: 700; margin-bottom: 15px; }
+
   .modal-content button {
     margin-top: 1rem;
     background-color: #ff385c;
@@ -154,105 +175,107 @@
 
   .modal-content button:hover { background-color: #e61e4d; }
 
-  @media screen and (max-width: 600px) {
-    .listing-info { flex-direction: column; align-items: center; }
-    .listing-details { text-align: center; }
-    .booking-header h1 { font-size: 1.6rem; }
+  @media screen and (max-width: 900px) {
+    .booking-container { flex-direction: column; }
+    .booking-left, .booking-right { flex: 100%; border: none; }
   }
 </style>
 
 <div class="booking-container">
-  <div class="booking-header">
-    <h1>Book Your Stay</h1>
-    <p>Enjoy your experience at <b><%= listing.title %></b></p>
+  <!-- Left Side (Info + Form) -->
+  <div class="booking-left">
+    <div class="booking-header">
+      <h1>Book Your Stay</h1>
+      <p>Enjoy your experience at <b><%= listing.title %></b></p>
+    </div>
+
+    <div class="listing-info">
+      <img src="<%= listing.image.url %>" alt="<%= listing.title %>" />
+      <div class="listing-details">
+        <h2><%= listing.title %></h2>
+        <p><%= listing.description %></p>
+        <p>📍 <%= listing.location %>, <%= listing.country %></p>
+        <p>💰 ₹<%= listing.price.toLocaleString("en-IN") %> / night</p>
+      </div>
+    </div>
+
+    <form class="booking-form" id="bookingForm">
+      <div class="row">
+        <div class="col-md-6">
+          <label for="checkin">Check-In:</label>
+          <input type="date" id="checkin" required class="form-control" />
+        </div>
+        <div class="col-md-6">
+          <label for="checkout">Check-Out:</label>
+          <input type="date" id="checkout" required class="form-control" />
+        </div>
+      </div>
+
+      <div class="row mt-3">
+        <div class="col-md-6">
+          <label for="guests">Guests:</label>
+          <input type="number" id="guests" min="1" value="1" class="form-control" required />
+        </div>
+        <div class="col-md-6">
+          <label for="email">Email:</label>
+          <input type="email" id="email" placeholder="you@example.com" class="form-control" required />
+        </div>
+      </div>
+
+      <label for="name" class="mt-3">Full Name:</label>
+      <input type="text" id="name" class="form-control" placeholder="Your name" required />
+
+      <label for="phone" class="mt-3">Phone Number:</label>
+      <input type="tel" id="phone" class="form-control" placeholder="+91 9876543210" required />
+
+      <p class="total mt-3">
+        Total: ₹<span id="total-price"><%= listing.price %></span>
+      </p>
+    </form>
   </div>
 
-  <div class="listing-info">
-    <img src="<%= listing.image.url %>" alt="<%= listing.title %>" />
-    <div class="listing-details">
-      <h2><%= listing.title %></h2>
-      <p><%= listing.description %></p>
-      <p>📍 <%= listing.location %>, <%= listing.country %></p>
-      <p>💰 ₹<%= listing.price.toLocaleString("en-IN") %> / night</p>
-    </div>
-  </div>
+  <!-- Right Side (Payment) -->
+  <div class="booking-right">
+    <div id="payment-section">
+      <h3 class="fw-bold text-center mb-4" style="color: #ff385c">💰 Payment Options</h3>
 
-  <form class="booking-form" id="bookingForm">
-    <div class="row">
-      <div class="col-md-6">
-        <label for="checkin">Check-In:</label>
-        <input type="date" id="checkin" required class="form-control" />
-      </div>
-      <div class="col-md-6">
-        <label for="checkout">Check-Out:</label>
-        <input type="date" id="checkout" required class="form-control" />
-      </div>
-    </div>
+      <div class="payment-options">
+        <div class="payment-card payment-box active">
+          <label>
+            <input type="radio" name="payment" value="Card" checked />
+            💳 Credit / Debit Card
+          </label>
+          <div class="payment-details" id="card-details">
+            <input type="text" placeholder="Card Number" />
+            <div class="row">
+              <div class="col-6"><input type="text" placeholder="MM/YY" /></div>
+              <div class="col-6"><input type="text" placeholder="CVV" /></div>
+            </div>
+          </div>
+        </div>
 
-    <div class="row mt-3">
-      <div class="col-md-6">
-        <label for="guests">Guests:</label>
-        <input type="number" id="guests" min="1" value="1" class="form-control" required />
-      </div>
-      <div class="col-md-6">
-        <label for="email">Email:</label>
-        <input type="email" id="email" placeholder="you@example.com" class="form-control" required />
-      </div>
-    </div>
+        <div class="payment-card payment-box">
+          <label>
+            <input type="radio" name="payment" value="UPI" />
+            🏦 UPI
+          </label>
+          <div class="payment-details" id="upi-details" style="display:none">
+            <input type="text" placeholder="Enter UPI ID" />
+          </div>
+        </div>
 
-    <label for="name" class="mt-3">Full Name:</label>
-    <input type="text" id="name" class="form-control" placeholder="Your name" required />
-
-    <label for="phone" class="mt-3">Phone Number:</label>
-    <input type="tel" id="phone" class="form-control" placeholder="+91 9876543210" required />
-
-    <p class="total mt-3">
-      Total: ₹<span id="total-price"><%= listing.price %></span>
-    </p>
-  </form>
-
-  <!-- Payment Section -->
-  <div id="payment-section">
-    <h3 class="fw-bold text-center mb-4" style="color: #ff385c">💰 Payment Options</h3>
-
-    <div class="payment-options">
-      <div class="payment-card payment-box active">
-        <label>
-          <input type="radio" name="payment" value="Card" checked />
-          💳 Credit / Debit Card
-        </label>
-        <div class="payment-details" id="card-details">
-          <input type="text" placeholder="Card Number" />
-          <div class="row">
-            <div class="col-6"><input type="text" placeholder="MM/YY" /></div>
-            <div class="col-6"><input type="text" placeholder="CVV" /></div>
+        <div class="payment-card payment-box">
+          <label>
+            <input type="radio" name="payment" value="PayPal" />
+            🌍 PayPal
+          </label>
+          <div class="payment-details" id="paypal-details" style="display:none">
+            <input type="email" placeholder="Enter PayPal Email" />
           </div>
         </div>
       </div>
 
-      <div class="payment-card payment-box">
-        <label>
-          <input type="radio" name="payment" value="UPI" />
-          🏦 UPI
-        </label>
-        <div class="payment-details" id="upi-details" style="display:none">
-          <input type="text" placeholder="Enter UPI ID" />
-        </div>
-      </div>
-
-      <div class="payment-card payment-box">
-        <label>
-          <input type="radio" name="payment" value="PayPal" />
-          🌍 PayPal
-        </label>
-        <div class="payment-details" id="paypal-details" style="display:none">
-          <input type="email" placeholder="Enter PayPal Email" />
-        </div>
-      </div>
-    </div>
-
-    <div class="text-center mt-4">
-      <button id="payNow" class="btn-pay w-100 py-2">
+      <button id="payNow" class="btn-pay">
         Proceed to Pay ₹<span id="total-display"><%= listing.price %></span>
       </button>
     </div>
@@ -280,7 +303,6 @@
 
   const pricePerNight = <%= listing.price %>;
 
-  // Calculate total price
   function calculateTotal() {
     const start = new Date(checkin.value);
     const end = new Date(checkout.value);
@@ -294,7 +316,6 @@
 
   [checkin, checkout, guests].forEach(el => el.addEventListener('input', calculateTotal));
 
-  // Payment toggle
   document.querySelectorAll('input[name="payment"]').forEach(radio => {
     radio.addEventListener('change', () => {
       document.querySelectorAll('.payment-details').forEach(div => div.style.display='none');
@@ -304,7 +325,6 @@
     });
   });
 
-  // Submit booking
   payNow.addEventListener('click', async (e) => {
     e.preventDefault();
 
@@ -316,7 +336,6 @@
 
     if(!start || !end) return alert("Please select check-in and check-out dates!");
 
-    // Send to backend
     try {
       const res = await fetch('/api/bookings', {
         method:'POST',
@@ -333,9 +352,7 @@
       const data = await res.json();
       if(!data.success) return alert("Booking failed: "+data.error);
 
-      // Show modal
       modal.style.display = 'flex';
-
     } catch(err) {
       alert("Error: " + err.message);
     }

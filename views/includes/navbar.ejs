@@ -1,16 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Airbnb Clone Navbar</title>
-
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
-
-  <style>
+<style>
     /* === Base Navbar Styling === */
     .navbar {
       background-color: #fff;
@@ -67,10 +55,27 @@
       padding: 0.4rem 1rem;
       transition: all 0.3s ease;
       background-color: #fff;
+      position: relative;
     }
 
     .search-bar:hover {
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .search-bar.search-active {
+      border-color: #ff385c;
+      box-shadow: 0 0 0 1px #ff385c;
+    }
+
+    .search-bar.has-results::after {
+      content: attr(data-results);
+      position: absolute;
+      bottom: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.8rem;
+      color: #666;
+      white-space: nowrap;
     }
 
     .search-bar input {
@@ -91,6 +96,20 @@
       align-items: center;
       justify-content: center;
       transition: background 0.25s ease, transform 0.2s ease;
+      position: relative;
+    }
+
+    .search-bar button[data-results]::after {
+      content: attr(data-results);
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: #ff385c;
+      color: white;
+      border-radius: 50%;
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      border: 2px solid white;
     }
 
     .search-bar button:hover {
@@ -107,7 +126,8 @@
       .search-bar {
         width: 100%;
         margin: 1rem 0;
-        visibility: hidden;
+        visibility: visible;
+        display: flex;
       }
 
       .navbar-collapse {
@@ -144,10 +164,8 @@
       }
     }
   </style>
-</head>
 
-<body>
-  <!-- === NAVBAR START === -->
+<!-- === NAVBAR START === -->
   <nav class="navbar navbar-expand-md sticky-top">
     <div class="container-fluid">
       <!-- Brand -->
@@ -171,7 +189,7 @@
 
         <!-- Search Bar -->
         <form class="d-flex search-bar" role="search">
-          <input id="search-in" type="text" placeholder="Search Destination" />
+          <input id="search-in" type="text" placeholder="Search Location" />
           <button id="search-btn" type="submit">
             <i class="fa-solid fa-magnifying-glass"></i>
           </button>
@@ -193,50 +211,30 @@
           <% } %>
 
           <% if (currUser) { %>
-          <li class="nav-item">
-            <a class="nav-link" href="/logout"><b>Logout</b></a>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <span class="avatar-sm me-2" style="background:#ff385c;color:#fff;border-radius:50%;width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center;font-weight:600;"> <%= currUser.username.charAt(0).toUpperCase() %> </span>
+              <span><%= currUser.username %></span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+              <li><a class="dropdown-item" href="/profile">My Profile</a></li>
+              <li><a class="dropdown-item" href="/profile">My Listings</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <form action="/login" method="POST" class="d-inline">
+                  <button type="submit" class="dropdown-item">Logout</button>
+                </form>
+              </li>
+            </ul>
           </li>
+          <!-- Visible logout button (uses existing GET /logout route) -->
+         
           <% } %>
         </ul>
       </div>
     </div>
   </nav>
-  <!-- === NAVBAR END === -->
+<!-- === NAVBAR END === -->
 
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-  <!-- Toggle Functionality -->
-  <script>
-    const navbarToggler = document.getElementById("navbarToggle");
-    const navbarCollapse = document.getElementById("navbarNavDropdown");
-
-    navbarToggler.addEventListener("click", () => {
-      const isOpen = navbarCollapse.classList.contains("show");
-
-      if (isOpen) {
-        navbarCollapse.classList.remove("show");
-      } else {
-        navbarCollapse.classList.add("show");
-      }
-    });
-  </script>
-
-  <!-- Search Functionality -->
-  <script>
-    const countries = ["USA", "Canada", "Mexico", "France", "Germany", "Italy", "Spain", "Australia", "Japan", "India"];
-    const searchInput = document.getElementById("search-in");
-    const searchBtn = document.getElementById("search-btn");
-
-    searchBtn.addEventListener("click", (event) => {
-      event.preventDefault();
-      const inputValue = searchInput.value.trim();
-      if (countries.includes(inputValue)) {
-        console.log(`Match found: ${inputValue}`);
-      } else {
-        console.log(`No match found for: ${inputValue}`);
-      }
-    });
-  </script>
-</body>
-</html>
+<!-- Note: Bootstrap JS and site scripts are loaded in layouts/boilerplate.ejs -->
+<!-- Small inline script removed from here and moved to public/js/script.js to ensure it runs after Bootstrap bundle -->

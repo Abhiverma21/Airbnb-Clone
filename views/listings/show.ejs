@@ -331,6 +331,18 @@
             <button class="btn btn-outline-dark">Delete Listing</button>
           </form>
           <% } %>
+          
+          <% if(currUser && !listing.owner._id.equals(currUser._id)) { %>
+          <button 
+            class="btn <%= currUser.favorites && currUser.favorites.includes(listing._id) ? 'btn-danger' : 'btn-outline-danger' %> favorite-btn"
+            data-listing-id="<%= listing._id %>"
+            onclick="toggleFavorite(this)"
+          >
+            <i class="bi bi-heart<%= currUser.favorites && currUser.favorites.includes(listing._id) ? '-fill' : '' %>"></i>
+            <%= currUser.favorites && currUser.favorites.includes(listing._id) ? 'Remove from Favorites' : 'Add to Favorites' %>
+          </button>
+          <% } %>
+
           <a href="/listings/<%= listing._id %>/book" class="btn book-now-btn"
             >Book Now</a
           >
@@ -414,4 +426,41 @@
       </div>
     </div>
   </div>
+  <script>
+    async function toggleFavorite(button) {
+      const listingId = button.dataset.listingId;
+      try {
+        const response = await fetch(`/listings/${listingId}/favorite`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          // Update button appearance
+          if (data.isFavorite) {
+            button.classList.remove('btn-outline-danger');
+            button.classList.add('btn-danger');
+            button.querySelector('i').classList.add('bi-heart-fill');
+            button.querySelector('i').classList.remove('bi-heart');
+            button.textContent = ' Remove from Favorites';
+          } else {
+            button.classList.add('btn-outline-danger');
+            button.classList.remove('btn-danger');
+            button.querySelector('i').classList.remove('bi-heart-fill');
+            button.querySelector('i').classList.add('bi-heart');
+            button.textContent = ' Add to Favorites';
+          }
+          // Prepend the icon
+          button.insertAdjacentHTML('afterbegin', `<i class="bi bi-heart${data.isFavorite ? '-fill' : ''}"></i>`);
+        }
+      } catch (err) {
+        console.error("Error toggling favorite:", err);
+      }
+    }
+  </script>
 </body>
+
+```

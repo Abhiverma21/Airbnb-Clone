@@ -24,5 +24,7 @@ router.post("/login",saveRedirectUrl,
 
 router.get("/logout",WrapAsync(userController.logout));
 
+// profile
+router.get('/profile', require('../middleware').isLoggedIn, WrapAsync(userController.profile));
 
 module.exports= router;

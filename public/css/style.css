@@ -162,12 +162,11 @@ body {
 }
 @media (max-width: 992px) {
     #search-btn{
-        display: none;
+        display: inline-block;
     }
     #search-in{
-        display: none;
+        display: inline-block;
     }
-   
 }
 @media(max-width: 989px){
     .tax-toggle{

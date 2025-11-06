@@ -10,6 +10,7 @@ const ExpressError = require("./utils/ExpressError.js");
 const listings = require("./route/listing.js");
 const Review = require("./route/review.js");
 const UserRouter = require("./route/user.js");
+const favoriteRoutes = require("./route/favorite.js");
 const User = require("./models/user.js");
 const session = require("express-session");
 const Mongostore = require("connect-mongo");
@@ -83,6 +84,7 @@ app.get("/", (req, res) => {
 });
 app.use("/listings/:id/reviews", Review);
 app.use("/", UserRouter);
+app.use("/", favoriteRoutes);
 app.listen(port, () => {
     console.log(`server is running on port ${port}`);
 });
