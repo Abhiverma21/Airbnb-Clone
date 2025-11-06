@@ -5,9 +5,10 @@ const Listing = require("../models/listing.js");
 const { isLoggedIn, isOwner, validatelisting } = require("../middleware.js");
 const listingController = require("../controller/listing.js");
 const multer = require("multer");
-const storage = require("../cloudConfig.js");
+const { storage } = require("../cloudConfig.js");
 
-const upload = multer(storage);
+// pass an options object to multer and explicitly set storage for clarity
+const upload = multer({ storage });
 
 // =========================
 // 📍 INDEX + CREATE

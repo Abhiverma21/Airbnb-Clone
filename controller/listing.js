@@ -32,6 +32,10 @@ module.exports.renderBookPage = async (req, res) => {
 
 module.exports.create = async (req, res, next) => {
     try {
+        // Debugging: log incoming file and body so we can see why uploads fail on Render
+        console.log('[listing.create] req.file:', req.file);
+        console.log('[listing.create] req.body.listing:', req.body && req.body.listing);
+
         if (!req.file) {
             req.flash("error", "Please upload an image");
             return res.redirect("/listings/new");
