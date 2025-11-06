@@ -30,16 +30,34 @@ module.exports.renderBookPage = async (req, res) => {
 
 
 
-module.exports.create =(async (req, res, next) => {
-    let url = req.file.path;
-    let filename = req.file.filename;
-    const newListing = new Listing(req.body.listing);
-    newListing.owner = req.user._id;
-    newListing.image = { url, filename};
-    await newListing.save();
-    req.flash("success", "New Listing Created");
-    res.redirect("/listings")
-});
+module.exports.create = async (req, res, next) => {
+    try {
+        if (!req.file) {
+            req.flash("error", "Please upload an image");
+            return res.redirect("/listings/new");
+        }
+        
+        const listingData = req.body.listing;
+        if (!listingData || !listingData.title || !listingData.description || !listingData.price || !listingData.location || !listingData.country) {
+            req.flash("error", "Please fill all required fields");
+            return res.redirect("/listings/new");
+        }
+
+        let url = req.file.path;
+        let filename = req.file.filename;
+        
+        const newListing = new Listing(listingData);
+        newListing.owner = req.user._id;
+        newListing.image = { url, filename };
+        
+        await newListing.save();
+        req.flash("success", "New Listing Created");
+        res.redirect("/listings");
+    } catch (err) {
+        req.flash("error", "Error creating listing: " + err.message);
+        res.redirect("/listings/new");
+    }
+};
 module.exports.show = async (req, res) => {
     let { id } = req.params;
     const listing = await Listing.findById(id)
