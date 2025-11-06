@@ -4,16 +4,23 @@ const ExpressError = require("./utils/ExpressError.js");
 const { listingSchema ,reviewSchema} = require("./schema.js");
 
 
-module.exports.isLoggedIn=(req,res,next)=>{
-if(!req.isAuthenticated()){
-    req.session.redirectUrl = req.originalUrl ;
-   req.flash("error","You must be logged in to your account");
-    return res.redirect("/login");
+// Ensure a single, robust isLoggedIn middleware (previously defined twice)
+module.exports.isLoggedIn = (req, res, next) => {
+    // Log authentication and session info for debugging
+    try {
+        console.log(`[middleware.isLoggedIn] isAuthenticated=${req.isAuthenticated()}, sessionID=${req.sessionID}, originalUrl=${req.originalUrl}`);
+    } catch (e) {
+        console.warn('[middleware.isLoggedIn] could not read auth/session info', e);
+    }
 
-    
-}
-next();
-}
+    if (!req.isAuthenticated || !req.isAuthenticated()) {
+        // Save the URL user tried to access so we can redirect after login
+        if (req && req.session) req.session.redirectUrl = req.originalUrl;
+        req.flash("error", "You must be logged in to your account");
+        return res.redirect("/login");
+    }
+    next();
+};
 module.exports.saveRedirectUrl= (req,res,next)=>{
     if(req.session.redirectUrl){
         res.locals.redirectUrl=req.session.redirectUrl;
@@ -53,13 +60,7 @@ module.exports.validateReview=(req,res,next)=>{
         next();
     }
 }
-module.exports.isLoggedIn = (req, res, next) => {
-    if (!req.isAuthenticated()) {
-        req.flash("error", "You must be logged in!");
-        return res.redirect("/login"); // redirect to your login page
-    }
-    next();
-};
+// ...existing code...
 
 
 

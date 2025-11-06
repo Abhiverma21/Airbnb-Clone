@@ -17,6 +17,15 @@ router
   .route("/")
   .get(WrapAsync(listingController.index))
   .post(
+    // small middleware to log auth/session state before handling file upload
+    (req, res, next) => {
+      try {
+        console.log(`[route:/listings POST] isAuthenticated=${req.isAuthenticated ? req.isAuthenticated() : 'undef'}, sessionID=${req.sessionID}`);
+      } catch (e) {
+        console.warn('[route:/listings POST] error reading auth/session info', e);
+      }
+      next();
+    },
     isLoggedIn,
     upload.single("listing[image]"),
     WrapAsync(listingController.create)
