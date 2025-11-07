@@ -32,9 +32,16 @@ module.exports.renderBookPage = async (req, res) => {
 
 module.exports.create = async (req, res, next) => {
     try {
-        // Debugging: log incoming file and body so we can see why uploads fail on Render
+        // Debugging: log incoming request details
+        console.log('[listing.create] Session ID:', req.sessionID);
+        console.log('[listing.create] Is Authenticated:', req.isAuthenticated());
         console.log('[listing.create] req.file:', req.file);
-        console.log('[listing.create] req.body.listing:', req.body && req.body.listing);
+        console.log('[listing.create] req.body:', req.body);
+
+        if (!req.isAuthenticated()) {
+            req.flash("error", "You must be logged in to create a listing");
+            return res.redirect("/login");
+        }
 
         if (!req.file) {
             req.flash("error", "Please upload an image");
@@ -43,6 +50,13 @@ module.exports.create = async (req, res, next) => {
         
         const listingData = req.body.listing;
         if (!listingData || !listingData.title || !listingData.description || !listingData.price || !listingData.location || !listingData.country) {
+            console.log('[listing.create] Missing fields:', { 
+                hasTitle: !!listingData?.title,
+                hasDesc: !!listingData?.description,
+                hasPrice: !!listingData?.price,
+                hasLocation: !!listingData?.location,
+                hasCountry: !!listingData?.country
+            });
             req.flash("error", "Please fill all required fields");
             return res.redirect("/listings/new");
         }
@@ -55,9 +69,11 @@ module.exports.create = async (req, res, next) => {
         newListing.image = { url, filename };
         
         await newListing.save();
+        console.log('[listing.create] Successfully created listing:', newListing._id);
         req.flash("success", "New Listing Created");
         res.redirect("/listings");
     } catch (err) {
+        console.error('[listing.create] Error:', err);
         req.flash("error", "Error creating listing: " + err.message);
         res.redirect("/listings/new");
     }

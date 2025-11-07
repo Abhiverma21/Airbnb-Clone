@@ -49,15 +49,15 @@ store.on("error", (err) => {
     console.error("Error in MongoStore", err);
 });
 //sessions
-const sessionOption = {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+const sessionOption = {
     store,
     secret: process.env.SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: {
-        expires: Date.now() + 1000 * 60 * 60 * 24 * 3,
-        maxAge: 1000 * 60 * 60 * 24 * 3,
-        httpOnly: true
+        maxAge: 1000 * 60 * 60 * 24 * 3, // 3 days
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production"
     }
 };
 // Home route
