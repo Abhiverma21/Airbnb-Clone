@@ -57,7 +57,7 @@ const sessionOption = {
     cookie: {
         maxAge: 1000 * 60 * 60 * 24 * 3, // 3 days
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production"
+        secure: process.env.NODE_ENV === "true"
     }
 };
 // Home route
