@@ -27,7 +27,8 @@ router
       next();
     },
     isLoggedIn,
-    upload.single("listing[image]"),
+    // multer should expect the same field name used in the form (<input name="image">)
+    upload.single("image"),
     WrapAsync(listingController.create)
   );
 
@@ -50,7 +51,8 @@ router
   .put(
     isLoggedIn,
     isOwner,
-    upload.single("listing[image]"),
+    // keep PUT consistent with POST: expect 'image'
+    upload.single("image"),
     validatelisting,
     WrapAsync(listingController.update)
   )
