@@ -43,6 +43,7 @@
   
   .form-floating {
     margin-bottom: 1rem;
+    position: relative;
   }
   
   .form-floating > .form-control {
@@ -54,6 +55,21 @@
     box-shadow: 0 0 0 0.25rem rgba(255, 56, 92, 0.25);
   }
   
+  /* 👁️ Password toggle icon */
+  .toggle-password {
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%);
+    color: #888;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+
+  .toggle-password:hover {
+    color: #ff385c;
+  }
+
   .btn-login {
     background: #ff385c;
     border: none;
@@ -137,9 +153,11 @@
                 <div class="invalid-feedback">Please enter your username or email.</div>
               </div>
 
-              <div class="form-floating mb-3">
+              <!-- 🔐 Password Field with Eye Toggle -->
+              <div class="form-floating mb-3 position-relative">
                 <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
                 <label for="password">Password</label>
+                <i class="fa-solid fa-eye toggle-password" id="togglePassword"></i>
                 <div class="invalid-feedback">Please enter your password.</div>
               </div>
 
@@ -183,5 +201,16 @@
       }, false)
     })
   })();
-</script>
 
+  // 👁️ Toggle Password Visibility
+  const togglePassword = document.getElementById('togglePassword');
+  const passwordInput = document.getElementById('password');
+
+  togglePassword.addEventListener('click', () => {
+    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+    passwordInput.setAttribute('type', type);
+
+    togglePassword.classList.toggle('fa-eye');
+    togglePassword.classList.toggle('fa-eye-slash');
+  });
+</script>
