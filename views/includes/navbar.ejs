@@ -1,240 +1,251 @@
 <style>
-    /* === Base Navbar Styling === */
+  /* === Base Navbar Styling === */
+  .navbar {
+    background-color: #fff;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+    padding: 0.7rem 4.5rem;
+    transition: all 0.3s ease;
+  }
+
+  .navbar-brand i {
+    font-size: 1.8rem;
+    color: #ff385c;
+    transition: transform 0.3s ease;
+  }
+
+  .navbar-brand i:hover {
+    transform: rotate(-15deg);
+  }
+
+  .brand-text {
+    font-size: 1.25rem;
+    color: #ff385c;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  .navbar-toggler {
+    border: none;
+    padding: 0.3rem;
+    background: transparent;
+  }
+
+  .navbar-toggler:focus {
+    box-shadow: none;
+  }
+
+  .navbar-toggler-icon {
+    width: 1.6rem;
+    height: 1.6rem;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23ff385c' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%280, 0, 0, 0.5%29' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+  }
+
+  /* === Links === */
+  .navbar-nav .nav-link {
+    font-weight: 500;
+    color: #333;
+    transition: color 0.25s ease, transform 0.25s ease;
+    padding: 0.6rem 1rem;
+  }
+
+  .navbar-nav .nav-link:hover {
+    color: #ff385c;
+    transform: translateY(-1px);
+  }
+
+  /* === Search Bar === */
+  .search-bar {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 50px;
+    padding: 0.4rem 1rem;
+    transition: all 0.3s ease;
+    background-color: #fff;
+    position: relative;
+    
+  }
+
+  .search-bar:hover {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .search-bar.search-active {
+    border-color: #ff385c;
+    box-shadow: 0 0 0 1px #ff385c;
+  }
+
+  .search-bar input {
+    border: none;
+    outline: none;
+    width: 160px;
+    font-size: 0.95rem;
+  }
+
+  .search-bar button {
+    background-color: #ff385c;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.25s ease, transform 0.2s ease;
+  }
+
+  .search-bar button:hover {
+    background-color: #e03150;
+    transform: scale(1.05);
+  }
+
+  /* === Responsive (Mobile) === */
+  @media (max-width: 768px) {
     .navbar {
+      padding: 0.8rem 1rem;
+    }
+
+    .brand-text {
+      font-size: 1.1rem;
+    }
+
+    .navbar-collapse {
+      width: 100%;
       background-color: #fff;
-      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-      padding: 0.7rem 4.5rem;
-      transition: all 0.3s ease;
+      border-radius: 12px;
+      padding: 1rem;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
+      transition: all 0.4s ease;
     }
 
-    .navbar-brand i {
-      font-size: 1.8rem;
-      color: #ff385c;
-      transition: transform 0.3s ease;
+    .navbar-collapse.show {
+      animation: slideDown 0.3s ease forwards;
     }
 
-    .navbar-brand i:hover {
-      transform: rotate(-15deg);
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
-    .navbar-toggler {
-      border: none;
-      padding: 0.3rem;
-      background: transparent;
-    }
-
-    .navbar-toggler:focus {
-      box-shadow: none;
-    }
-
-    .navbar-toggler-icon {
-      width: 1.6rem;
-      height: 1.6rem;
-      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23ff385c' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%280, 0, 0, 0.5%29' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
-    }
-
-    /* === Links === */
     .navbar-nav .nav-link {
-      font-weight: 500;
-      color: #333;
-      transition: color 0.25s ease, transform 0.25s ease;
-      padding: 0.6rem 1rem;
+      padding: 0.8rem 0;
+      border-bottom: 1px solid #f1f1f1;
     }
 
-    .navbar-nav .nav-link:hover {
-      color: #ff385c;
-      transform: translateY(-1px);
+    .navbar-nav .nav-link:last-child {
+      border-bottom: none;
     }
 
-    /* === Search Bar === */
+    /* === Mobile Search Bar Improved === */
     .search-bar {
-      display: flex;
-      align-items: center;
-      border: 1px solid #ddd;
-      border-radius: 50px;
-      padding: 0.4rem 1rem;
-      transition: all 0.3s ease;
-      background-color: #fff;
-      position: relative;
-    }
-
-    .search-bar:hover {
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .search-bar.search-active {
-      border-color: #ff385c;
-      box-shadow: 0 0 0 1px #ff385c;
-    }
-
-    .search-bar.has-results::after {
-      content: attr(data-results);
-      position: absolute;
-      bottom: -20px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 0.8rem;
-      color: #666;
-      white-space: nowrap;
+      width: 100%;
+      border-radius: 40px;
+      padding: 0.6rem 1rem;
+      margin: 0.8rem 0;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
     }
 
     .search-bar input {
-      border: none;
-      outline: none;
-      width: 140px;
-      font-size: 0.95rem;
+      width: 100%;
+      font-size: 1rem;
     }
 
     .search-bar button {
-      background-color: #ff385c;
-      color: #fff;
-      border: none;
-      border-radius: 50%;
-      width: 36px;
-      height: 36px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.25s ease, transform 0.2s ease;
-      position: relative;
+      width: 42px;
+      height: 42px;
     }
-
-    .search-bar button[data-results]::after {
-      content: attr(data-results);
-      position: absolute;
-      top: -8px;
-      right: -8px;
-      background: #ff385c;
-      color: white;
-      border-radius: 50%;
-      font-size: 0.7rem;
-      padding: 2px 6px;
-      border: 2px solid white;
-    }
-
-    .search-bar button:hover {
-      background-color: #e03150;
-      transform: scale(1.05);
-    }
-
-    /* === Responsive Mobile Adjustments === */
-    @media (max-width: 768px) {
-      .navbar {
-        padding: 0.8rem 1rem;
-      }
-
-      .search-bar {
-        width: 100%;
-        margin: 1rem 0;
-        visibility: visible;
-        display: flex;
-      }
-
-      .navbar-collapse {
-        width: 100%;
-        background-color: #fff;
-        border-radius: 12px;
-        padding: 1rem;
-        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
-        transition: all 0.4s ease;
-      }
-
-      .navbar-collapse.show {
-        animation: slideDown 0.3s ease forwards;
-      }
-
-      @keyframes slideDown {
-        from {
-          opacity: 0;
-          transform: translateY(-10px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      .navbar-nav .nav-link {
-        padding: 0.8rem 0;
-        border-bottom: 1px solid #f1f1f1;
-      }
-
-      .navbar-nav .nav-link:last-child {
-        border-bottom: none;
-      }
-    }
-  </style>
+  }
+</style>
 
 <!-- === NAVBAR START === -->
-  <nav class="navbar navbar-expand-md sticky-top">
-    <div class="container-fluid">
-      <!-- Brand -->
+<nav class="navbar navbar-expand-md sticky-top">
+  <div class="container-fluid d-flex align-items-center justify-content-between">
+    
+    <!-- Brand + HotelVault text -->
+    <div class="d-flex align-items-center">
       <a class="navbar-brand" href="/listings">
         <i class="fa-solid fa-compass"></i>
       </a>
-
-      <!-- Hamburger -->
-      <button class="navbar-toggler" type="button" id="navbarToggle">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <!-- Collapsible Content -->
-      <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <!-- Left Links -->
-        <ul class="navbar-nav me-auto">
-          <li class="nav-item text-center">
-            <a class="nav-link" href="/listings">HotelVault</a>
-          </li>
-        </ul>
-
-        <!-- Search Bar -->
-        <form class="d-flex search-bar" role="search">
-          <input id="search-in" type="text" placeholder="Search Location" />
-          <button id="search-btn" type="submit">
-            <i class="fa-solid fa-magnifying-glass"></i>
-          </button>
-        </form>
-
-        <!-- Right Side (Auth Links) -->
-        <ul class="navbar-nav ms-auto align-items-center">
-          <li class="nav-item">
-            <a class="nav-link" href="/listings/new">Airbnb your home</a>
-          </li>
-
-          <% if (!currUser) { %>
-          <li class="nav-item">
-            <a class="nav-link" href="/signUp"><b>Sign Up</b></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/login"><b>Login</b></a>
-          </li>
-          <% } %>
-
-          <% if (currUser) { %>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <span class="avatar-sm me-2" style="background:#ff385c;color:#fff;border-radius:50%;width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center;font-weight:600;"> <%= currUser.username.charAt(0).toUpperCase() %> </span>
-              <span><%= currUser.username %></span>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-              <li><a class="dropdown-item" href="/profile">My Profile</a></li>
-              <li><a class="dropdown-item" href="/profile">My Listings</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li>
-                <form action="/login" method="POST" class="d-inline">
-                  <button type="submit" class="dropdown-item">Logout</button>
-                </form>
-              </li>
-            </ul>
-          </li>
-          <!-- Visible logout button (uses existing GET /logout route) -->
-         
-          <% } %>
-        </ul>
-      </div>
+      <a href="/listings" style="text-decoration: none;"><span class="brand-text ms-2">HotelVault</span></a>
     </div>
-  </nav>
-<!-- === NAVBAR END === -->
 
-<!-- Note: Bootstrap JS and site scripts are loaded in layouts/boilerplate.ejs -->
-<!-- Small inline script removed from here and moved to public/js/script.js to ensure it runs after Bootstrap bundle -->
+    <!-- Hamburger Button -->
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNavDropdown"
+      aria-controls="navbarNavDropdown"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Collapsible Menu -->
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <!-- Search Bar -->
+      <form class="d-flex search-bar mx-auto my-2 my-md-0" role="search">
+        <input id="search-in" type="text" placeholder="Search Location" />
+        <button id="search-btn" type="submit">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+      </form>
+
+      <!-- Right Side Auth Links -->
+      <ul class="navbar-nav ms-auto align-items-center">
+        <li class="nav-item">
+          <a class="nav-link" href="/listings/new">Airbnb your home</a>
+        </li>
+
+        <% if (!currUser) { %>
+        <li class="nav-item">
+          <a class="nav-link" href="/signUp"><b>Sign Up</b></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/login"><b>Login</b></a>
+        </li>
+        <% } %>
+
+        <% if (currUser) { %>
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle d-flex align-items-center"
+            href="#"
+            id="userDropdown"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <span
+              class="avatar-sm me-2"
+              style="background:#ff385c;color:#fff;border-radius:50%;width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center;font-weight:600;"
+            >
+              <%= currUser.username.charAt(0).toUpperCase() %>
+            </span>
+            <span><%= currUser.username %></span>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+            <li><a class="dropdown-item" href="/profile">My Profile</a></li>
+            <li><a class="dropdown-item" href="/profile">My Listings</a></li>
+            <li><hr class="dropdown-divider" /></li>
+            <li>
+              <form action="/login" method="POST" class="d-inline">
+                <button type="submit" class="dropdown-item">Logout</button>
+              </form>
+            </li>
+          </ul>
+        </li>
+        <% } %>
+      </ul>
+    </div>
+  </div>
+</nav>
+<!-- === NAVBAR END === -->
