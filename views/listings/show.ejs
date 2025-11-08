@@ -76,7 +76,7 @@
     margin-top: 15px;
   }
   .price-highlight {
-    font-size: 1.0rem;
+    font-size: 1rem;
     font-weight: 700;
     color: #ff385c;
     margin-top: 15px;
@@ -143,7 +143,7 @@
   .star-rating {
     display: flex;
     flex-direction: row-reverse;
-    justify-content:flex-end;
+    justify-content: flex-end;
     gap: 5px;
   }
 
@@ -158,13 +158,13 @@
     transition: color 0.2s;
   }
 
-  /* hover effect */
+  /* Hover effect */
   .star-rating label:hover,
   .star-rating label:hover ~ label {
     color: gold;
   }
 
-  /* checked effect */
+  /* Checked (selected) stars stay highlighted */
   .star-rating input:checked ~ label {
     color: gold;
   }
@@ -315,7 +315,7 @@
           <div class="card-body">
             <p class="owner">Hosted by <b><%= listing.owner.username %></b></p>
             <p class="description">Description: <%= listing.description %></p>
-            <p class="price-highlight ">
+            <p class="price-highlight">
               ₹<%= listing.price.toLocaleString("en-IN") %> / night
             </p>
           </div>
@@ -330,16 +330,18 @@
           <form method="post" action="/listings/<%=listing.id%>?_method=DELETE">
             <button class="btn btn-outline-dark">Delete Listing</button>
           </form>
-          <% } %>
-          
-          <% if(currUser && !listing.owner._id.equals(currUser._id)) { %>
-          <button 
+          <% } %> <% if(currUser && !listing.owner._id.equals(currUser._id)) {
+          %>
+          <button
             class="btn <%= currUser.favorites && currUser.favorites.includes(listing._id) ? 'btn-danger' : 'btn-outline-danger' %> favorite-btn"
             data-listing-id="<%= listing._id %>"
             onclick="toggleFavorite(this)"
           >
-            <i class="bi bi-heart<%= currUser.favorites && currUser.favorites.includes(listing._id) ? '-fill' : '' %>"></i>
-            <%= currUser.favorites && currUser.favorites.includes(listing._id) ? 'Remove from Favorites' : 'Add to Favorites' %>
+            <i
+              class="bi bi-heart<%= currUser.favorites && currUser.favorites.includes(listing._id) ? '-fill' : '' %>"
+            ></i>
+            <%= currUser.favorites && currUser.favorites.includes(listing._id) ?
+            'Remove from Favorites' : 'Add to Favorites' %>
           </button>
           <% } %>
 
@@ -358,7 +360,7 @@
             <div class="mb-3">
               <label>Rating:</label>
               <div class="star-rating">
-                <% for(let i=1; i<=5; i++){ %>
+                <% for (let i = 5; i >= 1; i--) { %>
                 <input
                   type="radio"
                   id="star<%=i%>"
@@ -390,8 +392,7 @@
           <p class="text-muted">
             No reviews yet. Be the first to share your experience!
           </p>
-          <% } else { %> 
-          <% for(let review of listing.reviews){ %>
+          <% } else { %> <% for(let review of listing.reviews){ %>
           <div class="review-card">
             <div class="review-header">
               <div class="avatar">
@@ -400,13 +401,11 @@
               <div>
                 <p class="username">@<%= review.author.username %></p>
                 <div class="stars">
-                  <% for(let i=1;i<=5;i++){ %> 
-                    <% if(i <= review.rating){ %>
-                    <i class="fa-solid fa-star"></i>
-                    <% } else { %>
-                    <i class="fa-solid fa-star gray"></i>
-                    <% } %> 
-                  <% } %>
+                  <% for(let i=1;i<=5;i++){ %> <% if(i <= review.rating){ %>
+                  <i class="fa-solid fa-star"></i>
+                  <% } else { %>
+                  <i class="fa-solid fa-star gray"></i>
+                  <% } %> <% } %>
                 </div>
               </div>
             </div>
@@ -420,8 +419,7 @@
             </form>
             <% } %>
           </div>
-          <% } %> 
-          <% } %>
+          <% } %> <% } %>
         </div>
       </div>
     </div>
@@ -431,30 +429,33 @@
       const listingId = button.dataset.listingId;
       try {
         const response = await fetch(`/listings/${listingId}/favorite`, {
-          method: 'POST',
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json'
-          }
+            "Content-Type": "application/json",
+          },
         });
-        
+
         if (response.ok) {
           const data = await response.json();
           // Update button appearance
           if (data.isFavorite) {
-            button.classList.remove('btn-outline-danger');
-            button.classList.add('btn-danger');
-            button.querySelector('i').classList.add('bi-heart-fill');
-            button.querySelector('i').classList.remove('bi-heart');
-            button.textContent = ' Remove from Favorites';
+            button.classList.remove("btn-outline-danger");
+            button.classList.add("btn-danger");
+            button.querySelector("i").classList.add("bi-heart-fill");
+            button.querySelector("i").classList.remove("bi-heart");
+            button.textContent = " Remove from Favorites";
           } else {
-            button.classList.add('btn-outline-danger');
-            button.classList.remove('btn-danger');
-            button.querySelector('i').classList.remove('bi-heart-fill');
-            button.querySelector('i').classList.add('bi-heart');
-            button.textContent = ' Add to Favorites';
+            button.classList.add("btn-outline-danger");
+            button.classList.remove("btn-danger");
+            button.querySelector("i").classList.remove("bi-heart-fill");
+            button.querySelector("i").classList.add("bi-heart");
+            button.textContent = " Add to Favorites";
           }
           // Prepend the icon
-          button.insertAdjacentHTML('afterbegin', `<i class="bi bi-heart${data.isFavorite ? '-fill' : ''}"></i>`);
+          button.insertAdjacentHTML(
+            "afterbegin",
+            `<i class="bi bi-heart${data.isFavorite ? "-fill" : ""}"></i>`
+          );
         }
       } catch (err) {
         console.error("Error toggling favorite:", err);
